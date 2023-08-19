@@ -5,7 +5,7 @@ export default function Header(){
 
     return (
         <View style={styleHeader.container}>
-            <Text>What can I see tonight ?</Text>
+            <Text style={styleHeader.title}>My AppCore</Text>
         </View>
     )
 }
@@ -17,5 +17,12 @@ let styleHeader = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop:24
+    },
+    title :{
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'white',
+        top: 0,
+        textAlign: 'center',
     }
 });
