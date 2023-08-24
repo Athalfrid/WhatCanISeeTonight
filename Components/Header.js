@@ -2,10 +2,9 @@ import {Text, View,StyleSheet} from "react-native";
 
 export default function Header(){
 
-
     return (
         <View style={styleHeader.container}>
-            <Text style={styleHeader.title}>My AppCore</Text>
+            <Text style={styleHeader.title}>Que voir cette nuit ?</Text>
         </View>
     )
 }

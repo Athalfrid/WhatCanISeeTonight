@@ -1,68 +1,131 @@
 import * as MyTools from "../../Tools/Tools";
 import {useEffect, useState} from "react";
-import {Button, StyleSheet, Text, View} from "react-native";
-import * as Location from "expo-location";
+import {Button, Pressable, StyleSheet, Text, View} from "react-native";
 
-export default function WeatherComponent(){
+export default function WeatherComponent({infoMeteo,setInfoMeteo}){
 
-    const [coordinates,setCoordinates] = useState({'longitude':0,'latitude':0})
+    const [coordinates,setCoordinates] = useState(MyTools.getCoordinates);
+    const [city,setCity] = useState("")
 
-    const [infoMeteo,setInfoMeteo] = useState({});
-    const [isMeteoLoaded,setIsMeteoLoaded] = useState([{'reponse': false, 'message': "Erreur, Météo non chargée au lancement"}]);
+    const[cloudCover,setCloudCover] = useState()
+
+    useEffect(()=>{
+        setCoordinates(MyTools.getCoordinates)
+
+        setTimeout(()=> {
+            MyTools.getClosestCity(coordinates,setCity)
+            MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover)
+
+        },
+            500)
+    },[])
+
+    function reloadInfo() {
+        setCoordinates(MyTools.getCoordinates)
+        MyTools.getClosestCity(coordinates,setCity)
+        MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover)
+    }
 
 
-
-    useEffect(() => {
-        if(!isMeteoLoaded){
-            MyTools.getMeteo(setInfoMeteo,coordinates,setIsMeteoLoaded)
-        }
-        console.log(isMeteoLoaded)
-        console.log('weatherComponent : \n')
-        console.log(infoMeteo)
-    },[]);
 
     return (
-        <View>
-            <View>
-                <Button style={styleHeader.gps} title={"Où suis-je ?"} onClick={MyTools.getCoordinates(setCoordinates)}></Button>
-            </View>
-            <View style={styleHeader.containerMeteo}>
-                <Text style={styleHeader.gpsText}>Longitude : {coordinates.longitude}</Text>
-                <Text style={styleHeader.gpsText}>Latitude : {coordinates.latitude}</Text>
+        <View style={styleHeader.containerMeteo}>
+            {infoMeteo ?
+                <>
+                <View style={styleHeader.containerInformation}>
+                    <View style={styleHeader.containerLocation}>
+                        <Text>📍 <Text style={styleHeader.gpsText}>{city}</Text></Text>
+                    </View>
 
-            </View>
+                    <View style={styleHeader.containerTemperature}>
+                        <Text style={styleHeader.infoMeteo}>Température actuelle : {infoMeteo.current_weather.temperature}°C</Text>
+                        <Text style={styleHeader.infoMeteo}>Couverture nuageuse : {cloudCover} %</Text>
+                    </View>
+                </View>
+
+                <View style={styleHeader.containerBtn}>
+                    <Pressable style={styleHeader.button} onPress={reloadInfo}>
+                        <Text style={styleHeader.buttonText}>↻</Text>
+                    </Pressable>
+                </View>
+                </>
+                :
+                <View style={styleHeader.waitInformation}>
+                    <Text style={styleHeader.infoMeteo}>Chargement des informations</Text>
+                </View>
+            }
         </View>
     );
 }
 
 let styleHeader = StyleSheet.create({
 
-    infoMeteo :{
-        fontSize: 150,
-        color: 'black',
-        top: 0,
-        fontStyle:'italic',
-        textAlign:'center'
+    containerMeteo: {
+        flexDirection:'row',
+        height:100,
+        justifyContent:'space-around',
+        backgroundColor: 'black'
     },
-    gps :{
-        width:24,
+    containerInformation: {
+        flexDirection:'column',
+        flex:5,
+        justifyContent:'center'
+    },
+    containerBtn: {
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    containerLocation:{
+        flexDirection:'column',
+        justifyContent:'space-around',
+        alignItems:'center',
+        margin:5,
+    },
+    containerTemperature:{
+        flexDirection:'column',
+        justifyContent:'space-around',
+        alignItems:'center',
+        margin:5,
+    },
+    infoMeteo :{
         fontSize: 15,
         color: 'white',
-        top: 0,
         fontStyle:'italic',
         textAlign:'center'
+
+    },
+    button :{
+        color: 'white',
+        backgroundColor:'#aeb5bf',
+        justifyContent:'center',
+        alignItems:'center',
+        alignContent:'center',
+        borderRadius:6,
+        width:40,
+        height:40
+    },
+    buttonText:{
+        fontSize:30,
+        color:'black',
+        textAlign:'center'
+
     },
     gpsText :{
         fontSize: 15,
+        textDecorationLine:'underline',
         color: 'white',
         top: 0,
         fontStyle:'italic',
-        textAlign:'center'
-    },
-    containerMeteo: {
+        textAlign:'center',
+        margin:2,
+        padding:2
+    }, waitInformation: {
         flexDirection:'row',
-        height:'100%',
-        justifyContent:'space-around',
+        height:100,
+        justifyContent:'center',
+        alignItems:'center',
         backgroundColor: 'black'
     }
+
 });
