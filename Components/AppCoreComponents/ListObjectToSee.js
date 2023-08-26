@@ -1,4 +1,4 @@
-import {Button, Pressable, TextInput,Text, View} from "react-native";
+import {Button, Pressable, TextInput, Text, View, SafeAreaView, ScrollView, StatusBar} from "react-native";
 import styleSheet from "react-native-web/src/exports/StyleSheet";
 
 export default function ListObjectToSee(){
@@ -12,7 +12,19 @@ export default function ListObjectToSee(){
                 </Pressable>
             </View>
             <View style={styleListObject.tableObjectContainer}>
-
+                <SafeAreaView style={styleListObject.containerScrollView}>
+                    <ScrollView style={styleListObject.scrollView}>
+                        <Text style={styleListObject.textScrollView}>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                            aliquip ex ea commodo consequat. Duis aute irure dolor in
+                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                            culpa qui officia deserunt mollit anim id est laborum.
+                        </Text>
+                    </ScrollView>
+                </SafeAreaView>
             </View>
         </View>
     )
@@ -48,10 +60,18 @@ let styleListObject = styleSheet.create({
         width:80,
         height:40
     },
-    tableObjectContainer : {
-
+    containerScrollView:{
+        paddingTop:StatusBar.currentHeight
     },
-    tableObject : {
-
+    scrollView:{
+            backgroundColor:'lightblue',
+            marginHorizontal:20
+    },
+    textScrollView:{
+            fontSize:42
+    },
+    tableObjectContainer : {
+        height:'95%'
     }
+
 });
