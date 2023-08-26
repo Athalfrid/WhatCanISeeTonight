@@ -6,6 +6,7 @@ export default function WeatherComponent({infoMeteo,setInfoMeteo}){
 
     const [coordinates,setCoordinates] = useState(MyTools.getCoordinates);
     const [city,setCity] = useState("")
+    const [infoSun, setInfoSun] = useState({'sunrise':'','sunset':''})
 
     const[cloudCover,setCloudCover] = useState()
 
@@ -14,16 +15,15 @@ export default function WeatherComponent({infoMeteo,setInfoMeteo}){
 
         setTimeout(()=> {
             MyTools.getClosestCity(coordinates,setCity)
-            MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover)
+            MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun)
+        },500)
 
-        },
-            500)
     },[])
 
     function reloadInfo() {
         setCoordinates(MyTools.getCoordinates)
         MyTools.getClosestCity(coordinates,setCity)
-        MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover)
+        MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun)
     }
 
 
@@ -40,6 +40,7 @@ export default function WeatherComponent({infoMeteo,setInfoMeteo}){
                     <View style={styleHeader.containerTemperature}>
                         <Text style={styleHeader.infoMeteo}>Température actuelle : {infoMeteo.current_weather.temperature}°C</Text>
                         <Text style={styleHeader.infoMeteo}>Couverture nuageuse : {cloudCover} %</Text>
+                        {infoMeteo &&<Text style={styleHeader.infoSoleil}> 🌅 : {infoSun.sunrise}             🌇 : {infoSun.sunset}</Text> }
                     </View>
                 </View>
 
@@ -95,6 +96,11 @@ let styleHeader = StyleSheet.create({
         textAlign:'center'
 
     },
+    infoSoleil:{
+        fontSize: 12,
+        color: 'white',
+        textAlign:'center'
+    },
     button :{
         color: 'white',
         backgroundColor:'#aeb5bf',
@@ -126,6 +132,9 @@ let styleHeader = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         backgroundColor: 'black'
+    },
+    containerSunInformation: {
+        flexDirection:'row'
     }
 
 });

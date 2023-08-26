@@ -4,7 +4,7 @@ export default function Header(){
 
     return (
         <View style={styleHeader.container}>
-            <Text style={styleHeader.title}>Que voir cette nuit ?</Text>
+
         </View>
     )
 }
@@ -12,7 +12,7 @@ export default function Header(){
 let styleHeader = StyleSheet.create({
     container :{
         backgroundColor: 'blue',
-        height:'7%',
+        height:'5%',
         alignItems: 'center',
         justifyContent: 'center',
         marginTop:24

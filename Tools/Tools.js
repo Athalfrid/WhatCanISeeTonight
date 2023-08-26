@@ -1,5 +1,8 @@
 import * as Location from 'expo-location'
 
+
+
+
 export function getCoordinates ()  {
     const coordonnee = {'longitude':0,'latitude':0}
     Location.installWebGeolocationPolyfill()
@@ -35,10 +38,10 @@ export function getClosestCity(coordinates,setCity){
         )
 }
 
-export function getMeteo(setInfoMeteo,coordinates,setCloudCover) {
+export function getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun) {
 
     let apiOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&hourly=cloudcover&current_weather=true&forecast_days=1`;
-    let apiOpenMeteoBis =`https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&hourly=temperature_2m,cloudcover&current_weather=true&timezone=Europe%2FBerlin&forecast_days=1`;
+    let apiOpenMeteoBis =`https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&hourly=temperature_2m,cloudcover&daily=sunrise,sunset&current_weather=true&timezone=Europe%2FBerlin&forecast_days=1`;
     fetch(apiOpenMeteoBis)
         .then(
             (response)=> response.json()
@@ -49,5 +52,14 @@ export function getMeteo(setInfoMeteo,coordinates,setCloudCover) {
                 const array = {'arrayHour':result.hourly.time,'arrayDataCloudCover':result.hourly.cloudcover}
                 return array.arrayDataCloudCover[array.arrayHour.indexOf(result.current_weather.time)];
             })
+           setInfoSun({'sunrise':formatDateToHour(result.daily.sunrise),'sunset':formatDateToHour(result.daily.sunset)})
         })
+}
+
+function formatDateToHour(dateToChange){
+    const date = new Date(dateToChange);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    return `${hours.toString().padStart(2, '0')}H${minutes.toString().padStart(2, '0')}`;
 }

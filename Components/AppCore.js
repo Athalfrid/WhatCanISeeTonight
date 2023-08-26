@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Text, View, StyleSheet, Button} from "react-native";
 import WeatherComponent from "./AppCoreComponents/WeatherComponent";
 import styleSheet from "react-native-web/src/exports/StyleSheet";
+import ListObjectToSee from "./AppCoreComponents/ListObjectToSee";
 
 export default function AppCore({infoMeteo,setInfoMeteo}){
 
@@ -10,6 +11,7 @@ export default function AppCore({infoMeteo,setInfoMeteo}){
             <WeatherComponent
                 infoMeteo={infoMeteo}
                 setInfoMeteo={setInfoMeteo}/>
+            <ListObjectToSee/>
         </View>
 
     )
@@ -17,7 +19,7 @@ export default function AppCore({infoMeteo,setInfoMeteo}){
 
 let styleApp = styleSheet.create({
     containerPrincipal:{
-        height:'85%'
+        height:'87%'
     },
     containerButton:{
         backgroundColor:'red'
