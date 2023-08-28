@@ -39,7 +39,7 @@ export default function WeatherComponent({infoMeteo,setInfoMeteo}){
 
                     <View style={styleHeader.containerTemperature}>
                         <Text style={styleHeader.infoMeteo}>Température actuelle : {infoMeteo.current_weather.temperature}°C</Text>
-                        <Text style={styleHeader.infoMeteo}>Couverture nuageuse : {cloudCover} %</Text>
+                        <Text style={styleHeader.infoMeteo}>Couverture nuageuse par heure : {cloudCover} %</Text>
                         {infoMeteo &&<Text style={styleHeader.infoSoleil}> 🌅 : {infoSun.sunrise}             🌇 : {infoSun.sunset}</Text> }
                     </View>
                 </View>

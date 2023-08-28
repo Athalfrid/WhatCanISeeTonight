@@ -1,7 +1,10 @@
 import {Button, Pressable, TextInput, Text, View, SafeAreaView, ScrollView, StatusBar} from "react-native";
 import styleSheet from "react-native-web/src/exports/StyleSheet";
+import * as MyTools from '../../Tools/Tools'
 
 export default function ListObjectToSee(){
+
+    //MyTools.getPlanetPosition("Mars")
 
     return(
         <View style={styleListObject.backgroundComponent}>
@@ -71,7 +74,7 @@ let styleListObject = styleSheet.create({
             fontSize:42
     },
     tableObjectContainer : {
-        height:'95%'
+        height:'85%'
     }
 
 });
