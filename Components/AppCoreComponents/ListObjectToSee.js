@@ -1,5 +1,4 @@
 import {
-    Button,
     Pressable,
     TextInput,
     Text,
@@ -7,13 +6,11 @@ import {
     SafeAreaView,
     ScrollView,
     StatusBar,
-    TouchableOpacity
 } from "react-native";
 import styleSheet from "react-native-web/src/exports/StyleSheet";
 import * as MyTools from '../../Tools/Tools'
 import {useEffect, useState} from "react";
 import Planet from "./ElementList/Planet";
-import {Magnetometer} from "expo-sensors";
 
 export default function ListObjectToSee({coordinates}){
 
