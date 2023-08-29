@@ -1,10 +1,31 @@
-import {Button, Pressable, TextInput, Text, View, SafeAreaView, ScrollView, StatusBar} from "react-native";
+import {
+    Button,
+    Pressable,
+    TextInput,
+    Text,
+    View,
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
+    TouchableOpacity
+} from "react-native";
 import styleSheet from "react-native-web/src/exports/StyleSheet";
 import * as MyTools from '../../Tools/Tools'
+import {useEffect, useState} from "react";
+import Planet from "./ElementList/Planet";
+import {Magnetometer} from "expo-sensors";
 
-export default function ListObjectToSee(){
+export default function ListObjectToSee({coordinates}){
 
-    //MyTools.getPlanetPosition("Mars")
+    const [planets,setPlanets] = useState()
+
+
+    useEffect(() => {
+    MyTools.getPlanetPosition(setPlanets,coordinates);
+    }, []);
+
+
+
 
     return(
         <View style={styleListObject.backgroundComponent}>
@@ -17,15 +38,14 @@ export default function ListObjectToSee(){
             <View style={styleListObject.tableObjectContainer}>
                 <SafeAreaView style={styleListObject.containerScrollView}>
                     <ScrollView style={styleListObject.scrollView}>
-                        <Text style={styleListObject.textScrollView}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                            culpa qui officia deserunt mollit anim id est laborum.
-                        </Text>
+                        { planets &&
+                            planets.map((planet)=>{
+                                return (<Planet
+                                    key={planet.id}
+                                    planet={planet}
+                                />)
+                            })
+                        }
                     </ScrollView>
                 </SafeAreaView>
             </View>
@@ -67,11 +87,9 @@ let styleListObject = styleSheet.create({
         paddingTop:StatusBar.currentHeight
     },
     scrollView:{
-            backgroundColor:'lightblue',
-            marginHorizontal:20
-    },
-    textScrollView:{
-            fontSize:42
+        backgroundColor:'lightblue',
+        marginHorizontal:20,
+        padding:2
     },
     tableObjectContainer : {
         height:'85%'

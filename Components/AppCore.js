@@ -3,15 +3,23 @@ import {Text, View, StyleSheet, Button} from "react-native";
 import WeatherComponent from "./AppCoreComponents/WeatherComponent";
 import styleSheet from "react-native-web/src/exports/StyleSheet";
 import ListObjectToSee from "./AppCoreComponents/ListObjectToSee";
+import * as MyTools from "../Tools/Tools";
 
 export default function AppCore({infoMeteo,setInfoMeteo}){
+
+    const [coordinates,setCoordinates] = useState(MyTools.getCoordinates);
 
     return (
         <View style={styleApp.containerPrincipal}>
             <WeatherComponent
                 infoMeteo={infoMeteo}
-                setInfoMeteo={setInfoMeteo}/>
-            <ListObjectToSee/>
+                setInfoMeteo={setInfoMeteo}
+                coordinates={coordinates}
+                setCoordinates={setCoordinates}
+            />
+            <ListObjectToSee
+                coordinates={coordinates}
+            />
         </View>
 
     )

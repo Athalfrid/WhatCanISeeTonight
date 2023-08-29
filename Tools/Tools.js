@@ -1,6 +1,15 @@
 import * as Location from 'expo-location'
 
+export function getPlanetPosition(setPlanets,coordinates) {
+    const apiForPlanets = `https://www.astropical.space/api-ephem.php?lat=${coordinates.latitude}&lon=${coordinates.longitude}`;
 
+    fetch(apiForPlanets)
+        .then((response)=>response.json())
+        .then((result)=>{
+            setPlanets(result.response)
+        })
+
+}
 
 
 export function getCoordinates ()  {
@@ -38,7 +47,7 @@ export function getClosestCity(coordinates,setCity){
         )
 }
 
-export function getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun) {
+export function getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun,setInfoWind) {
 
     let apiOpenMeteoBis =`https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&hourly=temperature_2m,cloudcover_low,cloudcover_mid,cloudcover_high&daily=sunrise,sunset&current_weather=true&timezone=Europe%2FBerlin&forecast_days=1`;
     fetch(apiOpenMeteoBis)
@@ -56,21 +65,10 @@ export function getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun) {
 
                 let div = addOrNotCloudCover(cloudCoverLow,cloudCoverMid,cloudCoverHigh)
 
-                    console.log('______________')
-                    console.log('div '+div)
-                    console.log('Low '+cloudCoverLow)
-                    console.log('Mid '+cloudCoverMid)
-                    console.log('High '+cloudCoverHigh)
-                    console.log('result '+((cloudCoverLow+cloudCoverMid+cloudCoverHigh)/div).toFixed(1))
-
-                if(div > 0){
-                    return ((cloudCoverLow+cloudCoverMid+cloudCoverHigh)/div).toFixed(1)
-                }else{
-                    return ((cloudCoverLow+cloudCoverMid+cloudCoverHigh)).toFixed(1)
-                }
-
+                return div > 0 ?  ((cloudCoverLow+cloudCoverMid+cloudCoverHigh)/div).toFixed(1) : ((cloudCoverLow+cloudCoverMid+cloudCoverHigh)).toFixed(1)
             })
            setInfoSun({'sunrise':formatDateToHour(result.daily.sunrise),'sunset':formatDateToHour(result.daily.sunset)})
+            setInfoWind({'cardinaleDirection':getWindDirection(result.current_weather.winddirection),'degresDirection':result.current_weather.winddirection})
         })
 }
 
@@ -94,5 +92,12 @@ function formatDateToHour(dateToChange){
     const minutes = date.getMinutes();
 
     return `${hours.toString().padStart(2, '0')}H${minutes.toString().padStart(2, '0')}`;
+}
+
+function getWindDirection(wind){
+    const directions = ['N', 'N-NE', 'NE', 'E-NE', 'E', 'E-SE', 'SE', 'S-SE', 'S', 'S-SW', 'SW', 'W-SW', 'W', 'W-NW', 'NW', 'N-NW'];
+    const index = Math.round(wind / 22.5) % 16;
+    return directions[index];
+
 }
 

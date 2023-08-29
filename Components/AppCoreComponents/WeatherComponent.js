@@ -2,11 +2,12 @@ import * as MyTools from "../../Tools/Tools";
 import {useEffect, useState} from "react";
 import {Button, Pressable, StyleSheet, Text, View} from "react-native";
 
-export default function WeatherComponent({infoMeteo,setInfoMeteo}){
+export default function WeatherComponent({infoMeteo,setInfoMeteo,coordinates,setCoordinates}){
 
-    const [coordinates,setCoordinates] = useState(MyTools.getCoordinates);
+    //const [coordinates,setCoordinates] = useState(MyTools.getCoordinates);
     const [city,setCity] = useState("")
     const [infoSun, setInfoSun] = useState({'sunrise':'','sunset':''})
+    const [infoWind,setInfoWind] = useState({'cardinaleDirection':'','degresDirection':0})
 
     const[cloudCover,setCloudCover] = useState()
 
@@ -15,7 +16,7 @@ export default function WeatherComponent({infoMeteo,setInfoMeteo}){
 
         setTimeout(()=> {
             MyTools.getClosestCity(coordinates,setCity)
-            MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun)
+            MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun,setInfoWind)
         },500)
 
     },[])
@@ -23,7 +24,7 @@ export default function WeatherComponent({infoMeteo,setInfoMeteo}){
     function reloadInfo() {
         setCoordinates(MyTools.getCoordinates)
         MyTools.getClosestCity(coordinates,setCity)
-        MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun)
+        MyTools.getMeteo(setInfoMeteo,coordinates,setCloudCover,setInfoSun,setInfoWind)
     }
 
 
@@ -40,7 +41,13 @@ export default function WeatherComponent({infoMeteo,setInfoMeteo}){
                     <View style={styleHeader.containerTemperature}>
                         <Text style={styleHeader.infoMeteo}>Température actuelle : {infoMeteo.current_weather.temperature}°C</Text>
                         <Text style={styleHeader.infoMeteo}>Couverture nuageuse par heure : {cloudCover} %</Text>
-                        {infoMeteo &&<Text style={styleHeader.infoSoleil}> 🌅 : {infoSun.sunrise}             🌇 : {infoSun.sunset}</Text> }
+                        {infoMeteo &&
+                            <View style={styleHeader.infoWeather}>
+                                <Text style={styleHeader.infoSoleil}>🌬️ {infoWind.cardinaleDirection}     </Text>
+                                <Text style={styleHeader.infoSoleil}>🌅 {infoSun.sunrise}     </Text>
+                                <Text style={styleHeader.infoSoleil}>🌇 {infoSun.sunset}</Text>
+                            </View>
+                        }
                     </View>
                 </View>
 
@@ -95,6 +102,10 @@ let styleHeader = StyleSheet.create({
         fontStyle:'italic',
         textAlign:'center'
 
+    },
+    infoWeather:{
+        flexDirection:'row',
+        justifyContent:'space-around'
     },
     infoSoleil:{
         fontSize: 12,
