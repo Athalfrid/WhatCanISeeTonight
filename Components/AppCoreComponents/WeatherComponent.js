@@ -72,7 +72,10 @@ let styleHeader = StyleSheet.create({
         flexDirection:'row',
         height:100,
         justifyContent:'space-around',
-        backgroundColor: 'black'
+        backgroundColor: 'black',
+        margin:1,
+        borderWidth:1,
+        borderStyle:'dotted'
     },
     containerInformation: {
         flexDirection:'column',

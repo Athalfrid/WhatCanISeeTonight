@@ -1,4 +1,5 @@
 import * as Location from 'expo-location'
+import { View, Image } from 'react-native';
 
 export function getPlanetPosition(setPlanets,coordinates) {
     const apiForPlanets = `https://www.astropical.space/api-ephem.php?lat=${coordinates.latitude}&lon=${coordinates.longitude}`;
@@ -101,3 +102,25 @@ function getWindDirection(wind){
 
 }
 
+export const DynamicImageComponent = ({ imageName }) => {
+    // Mapping entre les noms d'images et les ressources importées
+    const imageMapping = {
+        venus: require('../assets/img/planets/venus.jpg'),
+        mercury: require('../assets/img/planets/mercury.jpg'),
+        mars: require('../assets/img/planets/mars.jpg'),
+        jupiter: require('../assets/img/planets/jupiter.jpg'),
+        saturn: require('../assets/img/planets/saturn.jpg'),
+        uranus: require('../assets/img/planets/uranus.png'),
+        neptune: require('../assets/img/planets/neptune.jpg'),
+        pluto: require('../assets/img/planets/pluto.jpg'),
+
+        // Ajoutez plus d'images au besoin
+    };
+
+    // Vérifiez si le nom de l'image passé correspond à une ressource
+    if (imageMapping[imageName]) {
+        return <Image source={imageMapping[imageName]} style={{ width: 85, height: 85 }} />;
+    } else {
+        return <View>Image introuvable</View>;
+    }
+};
