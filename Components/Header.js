@@ -11,8 +11,7 @@ export default function Header(){
 
 let styleHeader = StyleSheet.create({
     container :{
-        backgroundColor: 'blue',
-        height:'5%',
+        height:'0%',
         alignItems: 'center',
         justifyContent: 'center',
         marginTop:24

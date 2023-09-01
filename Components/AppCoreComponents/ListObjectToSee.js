@@ -11,10 +11,18 @@ import styleSheet from "react-native-web/src/exports/StyleSheet";
 import * as MyTools from '../../Tools/Tools'
 import {useEffect, useState} from "react";
 import Planet from "./ElementList/Planet";
+import FilterComponent from "./FilterComponent";
 
 export default function ListObjectToSee({coordinates}){
 
     const [planets,setPlanets] = useState()
+    const [searchPlanet,setSearchPlanet] = useState("")
+
+    const [showFilter,setShowFilter] = useState(false)
+
+    function showHiddFilter() {
+        setShowFilter(!showFilter)
+    }
 
 
     useEffect(() => {
@@ -25,24 +33,37 @@ export default function ListObjectToSee({coordinates}){
     let reloadListPlanet =()=>{
         MyTools.getPlanetPosition(setPlanets,coordinates);
     };
+
+
+    function handelSearch(event) {
+        setSearchPlanet(event.nativeEvent.text)
+    }
+
     return(
         <View style={styleListObject.backgroundComponent}>
             <View style={styleListObject.filter}>
                 <TextInput
-                    placeholder={'Vous recherchez ...'}
+                    placeholder={'Chercher ...'}
                     placeholderTextColor={'white'}
-
+                    onChange={handelSearch}
                     accessibilityHint={'Votre recherche'}
                     style={styleListObject.filterField}></TextInput>
-                <Pressable style={styleListObject.btn}>
-                    <Text>Rechercher</Text>
+                <Pressable style={styleListObject.btnOpenCloseFilter} onPress={showHiddFilter}>
+                    <Text style={styleListObject.textBtnFilter}>Filtrer</Text>
                 </Pressable>
             </View>
+            {showFilter &&
+                <FilterComponent/>
+            }
             <View style={styleListObject.tableObjectContainer}>
                 <SafeAreaView style={styleListObject.containerScrollView}>
                     <ScrollView style={styleListObject.scrollView}>
                         { planets &&
-                            planets.map((planet)=>{
+                            planets
+                                .filter((planet)=>{
+                                    return planet.name.toLowerCase().includes(searchPlanet.toLowerCase())
+                                })
+                                .map((planet)=>{
                                 return (<Planet
                                     key={planet.id}
                                     planet={planet}
@@ -62,33 +83,30 @@ export default function ListObjectToSee({coordinates}){
 
 }
 let styleListObject = styleSheet.create({
-        backgroundComponent: {
-            flex: 1,
-            backgroundColor: 'black',
-            margin:1,
-            borderBottomWidth:1,
-            borderLeftWidth:1,
-            borderRightWidth:1,
-            borderStyle:'dotted'
-        },
-        filterField : {
-            height: 40,
-            margin: 12,
-            borderWidth: 1,
-            padding: 10,
-            width:'70%',
-            borderBottomColor:'white',
-            borderTopColor:'white',
-            borderLeftColor:'white',
-            borderRightColor:'white'
-        },
-        filter : {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingRight:6,
-            paddingLeft:6,
-        },
+    backgroundComponent: {
+        flex: 1,
+        margin:1,
+        zIndex:0
+    },
+    filterField : {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        width:'65%',
+        borderBottomColor:'white',
+        borderTopColor:'white',
+        borderLeftColor:'white',
+        borderRightColor:'white',
+        color:'white'
+    },
+    filter : {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingRight:6,
+        paddingLeft:6,
+    },
     btn:{
         color: 'white',
         backgroundColor:'#aeb5bf',
@@ -113,17 +131,33 @@ let styleListObject = styleSheet.create({
             marginTop:2
     },
     scrollView:{
-        backgroundColor:'black',
         marginHorizontal:10,
         padding:2
     },
     tableObjectContainer : {
-        height:'80%'
+        height:'90%'
     },
     containerReload:{
         justifyContent:'center',
         alignItems:'center',
         padding:2
+    },
+    text: {
+        color:'white',
+    },
+    textBtnFilter: {
+        color:'white',
+        textAlign:'center'
+    },
+    btnOpenCloseFilter:{
+        color: 'white',
+        backgroundColor:'#aeb5bf',
+        justifyContent:'center',
+        alignItems:'center',
+        alignContent:'center',
+        borderRadius:6,
+        width:60,
+        height:25
     }
 
 });

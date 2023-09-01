@@ -1,4 +1,4 @@
-import {View, Text, Pressable, Image} from "react-native";
+import {View, Text, Pressable, Image, TouchableHighlight} from "react-native";
 import styleSheet from "react-native-web/src/exports/StyleSheet";
 import {useState} from "react";
 import {DynamicImageComponent} from "../../../Tools/Tools";
@@ -7,8 +7,18 @@ import {DynamicImageComponent} from "../../../Tools/Tools";
 export default function Planet({planet}){
 
     const [afficherDetails,setAfficherDetails] = useState(false)
+    const [isPress,setIsPress] = useState(false)
 
-    const planetName =planet.name.toLowerCase()
+    const planetName = planet.name.toLowerCase()
+
+    const touchProps = {
+        activeOpacity: 1,
+        underlayColor: 'blue',
+        style: afficherDetails ? stylePlanetObject.buttonPress : stylePlanetObject.button,
+        onHideUnderlay: () => setIsPress(false),
+        onShowUnderlay: () => setIsPress(true),
+        onPress: () => afficherdetail(),
+    };
 
 
     let afficherdetail = () => {
@@ -29,9 +39,9 @@ export default function Planet({planet}){
             </View>
         }
         <View style={{justifyContent:'center',alignItems:'center'}}>
-            <Pressable style={stylePlanetObject.button} onPressIn={afficherdetail}>
-                <Text>{!afficherDetails ? 'Détails' : 'Fermer'}</Text>
-            </Pressable>
+            <TouchableHighlight  {...touchProps}>
+                <Text>{!afficherDetails ? `Plus d'informations` : 'Fermer'}</Text>
+            </TouchableHighlight >
         </View>
         </View>
     )
@@ -59,6 +69,16 @@ let stylePlanetObject = styleSheet.create({
         alignItems:'center',
         alignContent:'center',
         borderRadius:6,
+        width:150,
+        height:25
+    },
+    buttonPress :{
+        color: 'black',
+        backgroundColor:'#aeb5bf',
+        justifyContent:'center',
+        alignItems:'center',
+        alignContent:'center',
+        borderRadius:6,
         width:60,
         height:25
     },
@@ -68,8 +88,7 @@ let stylePlanetObject = styleSheet.create({
         alignItems:'center',
         margin:5,
         padding: 5,
-        width:'100%',
-        backgroundColor: 'black'
+        width:'100%'
 
     },
     titleObject:{

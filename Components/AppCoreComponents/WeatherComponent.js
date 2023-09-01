@@ -72,7 +72,6 @@ let styleHeader = StyleSheet.create({
         flexDirection:'row',
         height:100,
         justifyContent:'space-around',
-        backgroundColor: 'black',
         margin:1,
         borderWidth:1,
         borderStyle:'dotted'
@@ -145,7 +144,6 @@ let styleHeader = StyleSheet.create({
         height:100,
         justifyContent:'center',
         alignItems:'center',
-        backgroundColor: 'black'
     },
     containerSunInformation: {
         flexDirection:'row'

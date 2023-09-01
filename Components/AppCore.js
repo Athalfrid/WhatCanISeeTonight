@@ -27,10 +27,7 @@ export default function AppCore({infoMeteo,setInfoMeteo}){
 
 let styleApp = styleSheet.create({
     containerPrincipal:{
-        height:'87%'
-    },
-    containerButton:{
-        backgroundColor:'red'
+        height:'92%'
     }
 
 }

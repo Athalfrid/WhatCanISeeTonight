@@ -105,14 +105,14 @@ function getWindDirection(wind){
 export const DynamicImageComponent = ({ imageName }) => {
     // Mapping entre les noms d'images et les ressources importées
     const imageMapping = {
-        venus: require('../assets/img/planets/venus.jpg'),
-        mercury: require('../assets/img/planets/mercury.jpg'),
-        mars: require('../assets/img/planets/mars.jpg'),
-        jupiter: require('../assets/img/planets/jupiter.jpg'),
-        saturn: require('../assets/img/planets/saturn.jpg'),
-        uranus: require('../assets/img/planets/uranus.png'),
-        neptune: require('../assets/img/planets/neptune.jpg'),
-        pluto: require('../assets/img/planets/pluto.jpg'),
+        venus: require('../assets/img/planetes_transparents/venus.png'),
+        mercury: require('../assets/img/planetes_transparents/mercury.png'),
+        mars: require('../assets/img/planetes_transparents/mars.png'),
+        jupiter: require('../assets/img/planetes_transparents/jupiter.png'),
+        saturn: require('../assets/img/planetes_transparents/saturn.png'),
+        uranus: require('../assets/img/planetes_transparents/uranus.png'),
+        neptune: require('../assets/img/planetes_transparents/neptune.png'),
+        pluto: require('../assets/img/planetes_transparents/pluto.png'),
 
         // Ajoutez plus d'images au besoin
     };
